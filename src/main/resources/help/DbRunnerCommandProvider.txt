@@ -1,0 +1,6 @@
+--- Command ---
+
+-command=cutedbrunner
+  Runs the new plugin command
+  
+
