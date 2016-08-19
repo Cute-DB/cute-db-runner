@@ -1,9 +1,7 @@
 package io.github.cutedb.runner.dto;
 
-import org.joda.time.DateTime;
 
-import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.Date;
 
 /**
  * Created by barmi83 on 29/07/16.
@@ -23,15 +21,15 @@ public class Run {
     private String user = null;
     private String databaseProductName = null;
     private BuildStatus status = null;
-    private Timestamp started = null;
-    private Timestamp ended = null;
+    private Date started = null;
+    private Date ended = null;
     private Integer criticalHits = 0;
     private Integer highHits = 0;
     private Integer mediumHits = 0;
     private Integer lowHits = 0;
 
     public Run(){
-        started = new Timestamp(new DateTime().getMillis());
+        started = new Date();
         status = BuildStatus.PENDING;
     }
 
@@ -92,19 +90,19 @@ public class Run {
         this.status = status;
     }
 
-    public Timestamp getStarted() {
+    public Date getStarted() {
         return started;
     }
 
-    public void setStarted(Timestamp started) {
+    public void setStarted(Date started) {
         this.started = started;
     }
 
-    public Timestamp getEnded() {
+    public Date getEnded() {
         return ended;
     }
 
-    public void setEnded(Timestamp ended) {
+    public void setEnded(Date ended) {
         this.ended = ended;
     }
 
@@ -141,40 +139,9 @@ public class Run {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Run run = (Run) o;
-        return Objects.equals(id, run.id) &&
-                Objects.equals(jdbcUrl, run.jdbcUrl) &&
-                Objects.equals(server, run.server) &&
-                Objects.equals(host, run.host) &&
-                Objects.equals(user, run.user) &&
-                Objects.equals(databaseProductName, run.databaseProductName) &&
-                Objects.equals(status, run.status) &&
-                Objects.equals(started, run.started) &&
-                Objects.equals(ended, run.ended)&&
-                Objects.equals(uuid, run.uuid)&&
-                Objects.equals(criticalHits, run.criticalHits)&&
-                Objects.equals(highHits, run.highHits)&&
-                Objects.equals(mediumHits, run.mediumHits)&&
-                Objects.equals(lowHits, run.lowHits);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, jdbcUrl, server, host, user, databaseProductName, status, started, ended, uuid, criticalHits, highHits, mediumHits, lowHits);
-    }
-
-    @Override
     public String toString()  {
         StringBuilder sb = new StringBuilder();
         sb.append("class Run {\n");
-
         sb.append("  id: ").append(id).append("\n");
         sb.append("  uuid: ").append(uuid).append("\n");
         sb.append("  jdbcUrl: ").append(jdbcUrl).append("\n");

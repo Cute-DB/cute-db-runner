@@ -25,7 +25,7 @@ public class BaseCuteDbRunnerTest {
         final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
         options.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
 
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sc_lint_test", "postgres", "postgres");
+        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/nppb", "nppb_adm", "changeme");
 
         final Executable executable = new SchemaCrawlerExecutable("cutedbrunner");
 

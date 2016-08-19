@@ -1,7 +1,6 @@
 package io.github.cutedb.runner.ws;
 
 import flexjson.JSONDeserializer;
-import io.github.cutedb.runner.utils.DateTransformer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -12,25 +11,36 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public abstract class BaseWsConsumer {
 
+    public static final String ACTION_POST = "POST";
+    public static final String ACTION_PUT = "PUT";
+    public static final String ACTION_GET = "GET";
+
     public Response createAndFireGetRequest(Map<String, String> parameters, String url) {
-        return createAndFireRequest(parameters, url, false, null);
+        return createAndFireRequest(parameters, url, ACTION_GET, null);
     }
 
     public Response createAndFirePostRequest(Map<String, String> parameters, String url) {
-        return createAndFireRequest(parameters, url, true, null);
+        return createAndFireRequest(parameters, url, ACTION_POST, null);
     }
 
     public Response createAndFirePostRequest(Map<String, String> parameters, String url, String content) {
-        return createAndFireRequest(parameters, url, true, content);
+        return createAndFireRequest(parameters, url, ACTION_POST, content);
     }
 
-    public Response createAndFireRequest(Map<String, String> parameters, String url, boolean isPost, String postContent) {
+    public Response createAndFirePutRequest(Map<String, String> parameters, String url) {
+        return createAndFireRequest(parameters, url, ACTION_PUT, null);
+    }
+
+    public Response createAndFirePutRequest(Map<String, String> parameters, String url, String content) {
+        return createAndFireRequest(parameters, url, ACTION_PUT, content);
+    }
+
+    public Response createAndFireRequest(Map<String, String> parameters, String url, String action, String postContent) {
 
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(url);
@@ -45,11 +55,18 @@ public abstract class BaseWsConsumer {
 
         Response response = null;
 
-            if (isPost)
+            if (ACTION_POST.equals(action)) {
                 if (postContent == null)
-                    response = target.request(MediaType.APPLICATION_JSON_VALUE).post(Entity.entity(form, javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE),Response.class);
+                    response = target.request(MediaType.APPLICATION_JSON_VALUE).post(Entity.entity(form, javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE), Response.class);
                 else
                     response = target.request(MediaType.APPLICATION_JSON_VALUE).post(Entity.json(postContent));
+            }
+            else if(ACTION_PUT.equals(action)) {
+                if (postContent == null)
+                    response = target.request(MediaType.APPLICATION_JSON_VALUE).put(Entity.entity(form, javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED_TYPE), Response.class);
+                else
+                    response = target.request(MediaType.APPLICATION_JSON_VALUE).put(Entity.json(postContent));
+            }
             else
                 response = target.request(MediaType.APPLICATION_JSON_VALUE).get();
 
@@ -104,7 +121,7 @@ public abstract class BaseWsConsumer {
 
         String output = response.readEntity(String.class);
 
-        result = new JSONDeserializer<T>().use(Date.class, new DateTransformer()).deserializeInto(output, result);
+        result = new JSONDeserializer<T>().deserializeInto(output, result);
 
         return result;
     }
@@ -125,7 +142,7 @@ public abstract class BaseWsConsumer {
 
         String output = response.readEntity(String.class);
 
-        result = new JSONDeserializer<List<T>>().use(null, ArrayList.class).use(Date.class, new DateTransformer()).use("values", targetClass).deserialize(output);
+        result = new JSONDeserializer<List<T>>().use(null, ArrayList.class).deserialize(output);
 
         return result;
     }
@@ -149,7 +166,7 @@ public abstract class BaseWsConsumer {
         }
 
         String output = response.readEntity(String.class);
-        result = new JSONDeserializer<T>().use(Date.class, new DateTransformer()).deserializeInto(output, result);
+        result = new JSONDeserializer<T>().deserializeInto(output, result);
         return result;
     }
 
