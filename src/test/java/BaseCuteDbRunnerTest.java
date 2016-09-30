@@ -40,6 +40,7 @@ public class BaseCuteDbRunnerTest {
 
         executable.setOutputOptions(outputOptions);
         executable.setSchemaCrawlerOptions(options);
+        //TODO catch execption to send error to server
         executable.execute(connection);
 
     }
