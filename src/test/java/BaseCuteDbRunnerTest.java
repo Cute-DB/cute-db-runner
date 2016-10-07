@@ -19,13 +19,18 @@ import java.sql.DriverManager;
 public class BaseCuteDbRunnerTest {
 
     @Test
-    public void execute() throws Exception {
+    public void executeNppb() throws Exception {
 
 
+        execute("nppb", "nppb_adm", "changeme");
+
+    }
+
+    private void execute(String databaseName, String user, String pwd) throws Exception {
         final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
         options.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
 
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/nppb", "nppb_adm", "changeme");
+        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/"+databaseName, user, pwd);
 
         final Executable executable = new SchemaCrawlerExecutable("cutedbrunner");
 
@@ -42,6 +47,10 @@ public class BaseCuteDbRunnerTest {
         executable.setSchemaCrawlerOptions(options);
         //TODO catch execption to send error to server
         executable.execute(connection);
+    }
 
+    @Test
+    public void executeDpmmc() throws Exception {
+        execute("dpmmc", "dpmmc_adm", "changeme");
     }
 }

@@ -30,7 +30,12 @@ public class CuteDbWsConsumer extends BaseWsConsumer implements ICuteDbWsConsume
 
 
     @Autowired(required = true)
-    String cuteDbWsBaseUrl = "http://localhost:9000/";
+    String cuteDbWsBaseUrl = "";
+
+
+    public CuteDbWsConsumer (String serverUrl){
+        cuteDbWsBaseUrl = serverUrl;
+    }
 
     private boolean valideCuteDbWsBaseUrl() {
         if (StringUtils.isBlank(cuteDbWsBaseUrl)) {

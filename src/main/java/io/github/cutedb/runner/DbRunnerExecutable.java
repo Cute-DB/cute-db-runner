@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,14 +46,29 @@ public class DbRunnerExecutable extends BaseStagedExecutable
     protected DbRunnerExecutable()
     {
         super(COMMAND);
-        cuteDbWsConsumer = new CuteDbWsConsumer();
     }
 
     @Override
     public void executeOn(final Catalog catalog, final Connection connection) throws Exception
     {
 
+        for (Map.Entry entry: additionalConfiguration.entrySet()) {
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
+        }
+
+        if(additionalConfiguration != null &&  additionalConfiguration.containsKey("cutedbserver")){
+            cuteDbWsConsumer = new CuteDbWsConsumer(additionalConfiguration.get("cutedbserver"));
+        }
+        else
+            throw new Exception("cutedbserver url is missing.");
+
         currentRun = initiateANewRun(catalog);
+
+
+
+
+
         try {
             final LintedCatalog lintedCatalog = createLintedCatalog(catalog, connection);
             sendDataToServer(lintedCatalog);
