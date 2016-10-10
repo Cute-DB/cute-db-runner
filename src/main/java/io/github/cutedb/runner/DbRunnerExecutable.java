@@ -4,6 +4,7 @@ package io.github.cutedb.runner;
 import io.github.cutedb.runner.dto.BuildStatus;
 import io.github.cutedb.runner.dto.LintSeverity;
 import io.github.cutedb.runner.dto.Run;
+import io.github.cutedb.runner.exceptions.CuteDbRunnerException;
 import io.github.cutedb.runner.ws.CuteDbWsConsumer;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schemacrawler.Config;
@@ -39,6 +40,8 @@ public class DbRunnerExecutable extends BaseStagedExecutable
     private static final Logger LOGGER = Logger.getLogger(DbRunnerExecutable.class.getName());
 
     static final String COMMAND = "cutedbrunner";
+    static final String CUTEDB_SERVER_PARAMETER = "cutedbserver";
+
 
     CuteDbWsConsumer cuteDbWsConsumer;
     Run currentRun;
@@ -49,39 +52,46 @@ public class DbRunnerExecutable extends BaseStagedExecutable
     }
 
     @Override
-    public void executeOn(final Catalog catalog, final Connection connection) throws Exception
-    {
+    /**
+     * Execute the command
+     * Initiate a new run by asking an unique id, check the database, process the results, and send data to remote cute-db-server
+     */
+    public void executeOn(final Catalog catalog, final Connection connection) throws CuteDbRunnerException {
 
-        for (Map.Entry entry: additionalConfiguration.entrySet()) {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
-        }
-
-        if(additionalConfiguration != null &&  additionalConfiguration.containsKey("cutedbserver")){
-            cuteDbWsConsumer = new CuteDbWsConsumer(additionalConfiguration.get("cutedbserver"));
+        if(additionalConfiguration != null &&  additionalConfiguration.containsKey(CUTEDB_SERVER_PARAMETER)){
+            cuteDbWsConsumer = new CuteDbWsConsumer(additionalConfiguration.get(CUTEDB_SERVER_PARAMETER));
         }
         else
-            throw new Exception("cutedbserver url is missing.");
+            throw new CuteDbRunnerException("cutedbserver url is missing.");
 
         currentRun = initiateANewRun(catalog);
 
-
-
-
-
         try {
             final LintedCatalog lintedCatalog = createLintedCatalog(catalog, connection);
-            sendDataToServer(lintedCatalog);
-        }catch (Exception e){
-            //TODO
-            System.out.println("ERROR");
-            e.printStackTrace();
+            processLints(lintedCatalog);
+        }catch (SchemaCrawlerException e){
+            LOGGER.log(Level.SEVERE, "The run failed : "+e.getMessage(), e);
+            if(currentRun != null){
+                currentRun.setStatus(BuildStatus.FAILURE);
+                currentRun.setEnded(new Date());
+                currentRun.setReason("The run failed : "+e.getMessage());
+            }
+        }finally {
+            if(currentRun != null)
+                sendDataToServer();
         }
 
 
 
     }
 
+    /**
+     * Check database with SchemaCrawler lint plugin
+     * @param catalog
+     * @param connection
+     * @return
+     * @throws SchemaCrawlerException
+     */
     private LintedCatalog createLintedCatalog(final Catalog catalog, final Connection connection) throws SchemaCrawlerException
     {
         final LintOptions lintOptions = new LintOptionsBuilder().fromConfig(additionalConfiguration).toOptions();
@@ -92,10 +102,19 @@ public class DbRunnerExecutable extends BaseStagedExecutable
         return new LintedCatalog(catalog, connection, linters);
     }
 
+    /**
+     * Send Run data to remote server
+     */
+    private void sendDataToServer(){
+        cuteDbWsConsumer.updateRun(currentRun);
+    }
 
 
-
-    private void sendDataToServer(final LintedCatalog lintedCatalog) throws IOException
+    /**
+     * Process Schemacrawler lints
+     * @param lintedCatalog
+     */
+    private void processLints(final LintedCatalog lintedCatalog)
     {
         LOGGER.log(Level.INFO, "Start sending data");
         Stream<Lint<?>> scLints = StreamSupport.stream(lintedCatalog.getCollector().spliterator(),  false);
@@ -115,10 +134,18 @@ public class DbRunnerExecutable extends BaseStagedExecutable
 
        currentRun.setStatus(BuildStatus.SUCCESS);
        currentRun.setEnded(new Date());
-       cuteDbWsConsumer.updateRun(currentRun);
     }
 
-    private Run initiateANewRun(final Catalog lintedCatalog){
+    /**
+     * Initiate a new Run :
+     * - ask for an unique ID
+     * - set basic run information
+     * - send the new run to remote server
+     * @param lintedCatalog
+     * @return
+     * @throws CuteDbRunnerException
+     */
+    private Run initiateANewRun(final Catalog lintedCatalog) throws CuteDbRunnerException {
         String uuid = cuteDbWsConsumer.generateRunUuid();
 
         Run newRun = new Run();
@@ -129,14 +156,12 @@ public class DbRunnerExecutable extends BaseStagedExecutable
         try {
             newRun.setHost(InetAddress.getLocalHost().getHostName());
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new CuteDbRunnerException("Unable to get host name", e.getCause());
         }
-        LOGGER.info(newRun.toString());
         Run remoteRun = cuteDbWsConsumer.createNewRun(newRun);
-        LOGGER.info(remoteRun.toString());
         return remoteRun;
     }
-
 
 
     /**

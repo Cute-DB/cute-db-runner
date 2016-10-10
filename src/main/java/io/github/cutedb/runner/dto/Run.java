@@ -27,6 +27,7 @@ public class Run {
     private Integer highHits = 0;
     private Integer mediumHits = 0;
     private Integer lowHits = 0;
+    private String reason;
 
     public Run(){
         started = new Date();
@@ -138,6 +139,14 @@ public class Run {
         this.lowHits = lowHits;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     @Override
     public String toString()  {
         StringBuilder sb = new StringBuilder();
@@ -154,6 +163,7 @@ public class Run {
         sb.append("  highHits: ").append(highHits).append("\n");
         sb.append("  mediumHits: ").append(mediumHits).append("\n");
         sb.append("  lowHits: ").append(lowHits).append("\n");
+        sb.append("  reason: ").append(reason).append("\n");
         sb.append("}\n");
         return sb.toString();
     }
