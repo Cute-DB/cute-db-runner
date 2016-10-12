@@ -17,14 +17,12 @@ import schemacrawler.tools.lint.Linters;
 import schemacrawler.tools.lint.executable.LintOptions;
 import schemacrawler.tools.lint.executable.LintOptionsBuilder;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,8 +37,8 @@ public class DbRunnerExecutable extends BaseStagedExecutable
 
     private static final Logger LOGGER = Logger.getLogger(DbRunnerExecutable.class.getName());
 
-    static final String COMMAND = "cutedbrunner";
-    static final String CUTEDB_SERVER_PARAMETER = "cutedbserver";
+    public static final String COMMAND = "cutedbrunner";
+    public static final String CUTEDB_SERVER_PARAMETER = "cutedbserver";
 
 
     CuteDbWsConsumer cuteDbWsConsumer;

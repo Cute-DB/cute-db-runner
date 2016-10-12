@@ -1,3 +1,4 @@
+import io.github.cutedb.runner.DbRunnerExecutable;
 import org.junit.Test;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
@@ -26,6 +27,11 @@ public class BaseCuteDbRunnerTest {
 
     }
 
+    @Test
+    public void executeDpmmc() throws Exception {
+        execute("dpmmc", "dpmmc_adm", "changeme");
+    }
+
     private void execute(String databaseName, String user, String pwd) throws Exception {
         final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
         options.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
@@ -38,6 +44,7 @@ public class BaseCuteDbRunnerTest {
         final LintOptionsBuilder optionsBuilder = new LintOptionsBuilder();
         optionsBuilder.withLinterConfigs(linterConfigsFile.toString());
         executable.setAdditionalConfiguration(optionsBuilder.toConfig());
+        executable.getAdditionalConfiguration().put(DbRunnerExecutable.CUTEDB_SERVER_PARAMETER, "http://localhost:9000/");
 
         Path out = Paths.get("target/test_"+this.getClass().getSimpleName()+".json");
         OutputOptions outputOptions = new OutputOptions(TextOutputFormat.json, out);
@@ -49,8 +56,4 @@ public class BaseCuteDbRunnerTest {
         executable.execute(connection);
     }
 
-    @Test
-    public void executeDpmmc() throws Exception {
-        execute("dpmmc", "dpmmc_adm", "changeme");
-    }
 }
