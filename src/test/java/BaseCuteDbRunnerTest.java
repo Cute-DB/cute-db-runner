@@ -1,4 +1,6 @@
 import io.github.cutedb.runner.DbRunnerExecutable;
+import io.github.cutedb.runner.utils.H2SqlDatabase;
+import org.junit.Before;
 import org.junit.Test;
 import schemacrawler.schemacrawler.SchemaCrawlerOptions;
 import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
@@ -19,26 +21,26 @@ import java.sql.DriverManager;
  */
 public class BaseCuteDbRunnerTest {
 
-    @Test
-    public void executeNppb() throws Exception {
+    protected static H2SqlDatabase database;
 
-
-        execute("nppb", "nppb_adm", "changeme");
-
+    @Before
+    public void init() throws Exception {
+        database = new H2SqlDatabase();
+        database.setUp("test");
     }
 
     @Test
-    public void executeDpmmc() throws Exception {
-        execute("dpmmc", "dpmmc_adm", "changeme");
+    public void executeSampleData() throws Exception {
+        execute("runnerTest", "sa", "");
     }
 
-    private void execute(String databaseName, String user, String pwd) throws Exception {
+    private void execute(String databaseName, String user, String pwd)  throws Exception{
         final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
         options.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
 
         Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/"+databaseName, user, pwd);
 
-        final Executable executable = new SchemaCrawlerExecutable("cutedbrunner");
+        final Executable executable = new SchemaCrawlerExecutable(DbRunnerExecutable.COMMAND);
 
         final Path linterConfigsFile = FileSystems.getDefault().getPath("", BaseCuteDbRunnerTest.class.getResource("schemacrawler-linter-configs-test.xml").getPath());
         final LintOptionsBuilder optionsBuilder = new LintOptionsBuilder();
@@ -52,7 +54,6 @@ public class BaseCuteDbRunnerTest {
 
         executable.setOutputOptions(outputOptions);
         executable.setSchemaCrawlerOptions(options);
-        //TODO catch execption to send error to server
         executable.execute(connection);
     }
 
