@@ -37,7 +37,7 @@ public class DbRunnerExecutable extends BaseStagedExecutable
 
     private static final Logger LOGGER = Logger.getLogger(DbRunnerExecutable.class.getName());
 
-    public static final String COMMAND = "cutedbrunner";
+    public static final String COMMAND = "cutedb";
     public static final String CUTEDB_SERVER_PARAMETER = "cutedbserver";
 
 

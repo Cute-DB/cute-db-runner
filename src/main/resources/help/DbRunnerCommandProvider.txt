@@ -1,6 +1,6 @@
 --- Command ---
 
--command=cutedbrunner
+-command=cutedb
   Runs the new plugin command
   
 

@@ -1,4 +1,5 @@
 
+import io.github.cutedb.runner.DbRunnerExecutable;
 import org.junit.Test;
 import schemacrawler.tools.executable.CommandRegistry;
 
@@ -12,7 +13,7 @@ public class TestCommandPlugin
     throws Exception
   {
     final CommandRegistry registry = new CommandRegistry();
-    assertTrue(registry.hasCommand("cutedbrunner"));
+    assertTrue(registry.hasCommand(DbRunnerExecutable.COMMAND));
   }
 
 }
