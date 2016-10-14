@@ -3,7 +3,20 @@ jdk:
 - oraclejdk8
 cache:
   directories:
-  - $HOME/.m2
+  - "$HOME/.m2"
 install: true
-script :
-  - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true
+script:
+- mvn clean install checksum:files -DskipTests=true -Dmaven.javadoc.skip=true
+deploy:
+  provider: releases
+  api_key:
+    secure: nu9KJ4KxYqm1pB9+ESsfyjQjlAeDool/1IwimSjpQ/6018+s+y0zFTLqTFX8Lq2d+gDlbdhnAV8Mv9LZlcwNRTmyJo3ZxFt+Mr23dn5LCx0PyTH00md/9gFoRNSpGvBIqwNJw5AUM5eqKDbAodDpXNemfXn7kd5zbXSVo0vtVcOESk0HO7tRfjMvfxbKEOMXil67iKTdSlQQ/++F/5f5rWOK8OaBZYrIvdos+7s4RPs35lUypQDiX8nUn08SnFB5Lqudr00cqKu+i4FPwqSgeqr3lCjCysGR1irmu1qz0AUG6ssp0xqrsO3nCpZIxT0+bZCzZWh3XTdrUy4TnVO5A3K+PKDiconkWQyIxLxZoOmtaa90GfBZHpJQfHfy/auL/wAjQ+YHtPRVchUPlzOgWljrHmWm046g0MRoc/bhBiDWQr1yZxLdBI/ss4o8RPhWTx54uvZhWwAas76pbaTHrvjnyERUvjv7i3x7dt+LJf/DvgroFaPrg/XzsMfqraZ7QU0ZGTs6VJdDKY027WzZQ+oSp7htDTTq8pknz+O59pIYIXPhr3ildRtmYGm2/q8gvjpKymIuWAUza/zVASl317sOJK8t63PBafzQAHu1ex2RmlFhneb+MHGosjylEwPDQZog8y0PtEMcdCRhGosjuEfEUToJxuP2Tq6elr3s+tc=
+  file:
+    - export RELEASE_PKG_FILE=$(ls target/*.jar)
+    - export RELEASE_PKG_MD5_FILE=$(ls target/*.jar.md5)
+    - export RELEASE_PKG_SHA_FILE=$(ls target/*.jar.sha1)
+    - echo "deploying $RELEASE_PKG_FILE , $RELEASE_PKG_MD5_FILE , $RELEASE_PKG_SHA_FILE to GitHub releases"
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: Cute-DB/cute-db-runner
