@@ -33,8 +33,8 @@ public class CuteDbWsConsumer extends BaseWsConsumer implements ICuteDbWsConsume
     String cuteDbWsBaseUrl = "";
 
 
-    public CuteDbWsConsumer (String serverUrl){
-        cuteDbWsBaseUrl = serverUrl;
+    public CuteDbWsConsumer (String server, String port){
+        cuteDbWsBaseUrl = "http://"+server+":"+port+"/";
     }
 
     private boolean valideCuteDbWsBaseUrl() {

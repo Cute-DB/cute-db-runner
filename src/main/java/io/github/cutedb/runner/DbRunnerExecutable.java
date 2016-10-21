@@ -39,6 +39,8 @@ public class DbRunnerExecutable extends BaseStagedExecutable
 
     public static final String COMMAND = "cutedb";
     public static final String CUTEDB_SERVER_PARAMETER = "cutedbserver";
+    public static final String CUTEDB_SERVER_PORT_PARAMETER = "cutedbserverport";
+    public static final String CUTEDB_SERVER_PORT = "9000";
 
 
     CuteDbWsConsumer cuteDbWsConsumer;
@@ -57,7 +59,7 @@ public class DbRunnerExecutable extends BaseStagedExecutable
     public void executeOn(final Catalog catalog, final Connection connection) throws CuteDbRunnerException {
 
         if(additionalConfiguration != null &&  additionalConfiguration.containsKey(CUTEDB_SERVER_PARAMETER)){
-            cuteDbWsConsumer = new CuteDbWsConsumer(additionalConfiguration.get(CUTEDB_SERVER_PARAMETER));
+            cuteDbWsConsumer = new CuteDbWsConsumer(additionalConfiguration.get(CUTEDB_SERVER_PARAMETER), additionalConfiguration.getStringValue(CUTEDB_SERVER_PORT_PARAMETER, CUTEDB_SERVER_PORT));
         }
         else
             throw new CuteDbRunnerException("cutedbserver url is missing.");
@@ -150,7 +152,10 @@ public class DbRunnerExecutable extends BaseStagedExecutable
         newRun.setUuid(uuid);
         newRun.setJdbcUrl(lintedCatalog.getJdbcDriverInfo().getConnectionUrl());
         newRun.setDatabaseProductName(lintedCatalog.getDatabaseInfo().getProductName());
+        newRun.setServer(additionalConfiguration.get("server"));
         newRun.setStatus(BuildStatus.RUNNING);
+        newRun.setDbName(additionalConfiguration.get("database"));
+        newRun.setDbHost(additionalConfiguration.get("host"));
         try {
             newRun.setHost(InetAddress.getLocalHost().getHostName());
         } catch (UnknownHostException e) {

@@ -17,12 +17,17 @@ public class Run {
     private String uuid = null;
     private String jdbcUrl = null;
     private String server = null;
+    private String dbHost = null;
+    private String dbName = null;
     private String host = null;
     private String user = null;
     private String databaseProductName = null;
     private BuildStatus status = null;
     private Date started = null;
     private Date ended = null;
+    private String runnerVersion = null;
+    private String schemaCrawlerVersion = null;
+    private String additionalLintsVersion = null;
     private Integer criticalHits = 0;
     private Integer highHits = 0;
     private Integer mediumHits = 0;
@@ -107,6 +112,30 @@ public class Run {
         this.ended = ended;
     }
 
+    public String getRunnerVersion() {
+        return runnerVersion;
+    }
+
+    public void setRunnerVersion(String runnerVersion) {
+        this.runnerVersion = runnerVersion;
+    }
+
+    public String getSchemaCrawlerVersion() {
+        return schemaCrawlerVersion;
+    }
+
+    public void setSchemaCrawlerVersion(String schemaCrawlerVersion) {
+        this.schemaCrawlerVersion = schemaCrawlerVersion;
+    }
+
+    public String getAdditionalLintsVersion() {
+        return additionalLintsVersion;
+    }
+
+    public void setAdditionalLintsVersion(String additionalLintsVersion) {
+        this.additionalLintsVersion = additionalLintsVersion;
+    }
+
     public Integer getCriticalHits() {
         return criticalHits;
     }
@@ -147,25 +176,46 @@ public class Run {
         this.reason = reason;
     }
 
+    public String getDbHost() {
+        return dbHost;
+    }
+
+    public void setDbHost(String dbHost) {
+        this.dbHost = dbHost;
+    }
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
+
     @Override
-    public String toString()  {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Run {\n");
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  uuid: ").append(uuid).append("\n");
-        sb.append("  jdbcUrl: ").append(jdbcUrl).append("\n");
-        sb.append("  server: ").append(server).append("\n");
-        sb.append("  host: ").append(host).append("\n");
-        sb.append("  user: ").append(user).append("\n");
-        sb.append("  databaseProductName: ").append(databaseProductName).append("\n");
-        sb.append("  status: ").append(status).append("\n");
-        sb.append("  criticalHits: ").append(criticalHits).append("\n");
-        sb.append("  highHits: ").append(highHits).append("\n");
-        sb.append("  mediumHits: ").append(mediumHits).append("\n");
-        sb.append("  lowHits: ").append(lowHits).append("\n");
-        sb.append("  reason: ").append(reason).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+    public String toString() {
+        return "Run{" +
+                "id=" + id +
+                ", uuid='" + uuid + '\'' +
+                ", jdbcUrl='" + jdbcUrl + '\'' +
+                ", server='" + server + '\'' +
+                ", dbHost='" + dbHost + '\'' +
+                ", dbName='" + dbName + '\'' +
+                ", host='" + host + '\'' +
+                ", user='" + user + '\'' +
+                ", databaseProductName='" + databaseProductName + '\'' +
+                ", status=" + status +
+                ", started=" + started +
+                ", ended=" + ended +
+                ", runnerVersion='" + runnerVersion + '\'' +
+                ", schemaCrawlerVersion='" + schemaCrawlerVersion + '\'' +
+                ", additionalLintsVersion='" + additionalLintsVersion + '\'' +
+                ", criticalHits=" + criticalHits +
+                ", highHits=" + highHits +
+                ", mediumHits=" + mediumHits +
+                ", lowHits=" + lowHits +
+                ", reason='" + reason + '\'' +
+                '}';
     }
 
     public Integer getScore(){
