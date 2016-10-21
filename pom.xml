@@ -9,8 +9,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <schemacrawler.version>14.09.02</schemacrawler.version>
-        <schemacrawler-additional-lints.version>1.1.9</schemacrawler-additional-lints.version>
+        <schemacrawler.version>14.10.03</schemacrawler.version>
+        <schemacrawler-additional-lints.version>1.1.10</schemacrawler-additional-lints.version>
         <maven-shade-plugin.version>2.4.3</maven-shade-plugin.version>
         <junit.version>4.12</junit.version>
         <javassist.version>3.20.0-GA</javassist.version>
@@ -121,11 +121,6 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>${cglib.version}</version>
-        </dependency>
     </dependencies>
 
 
