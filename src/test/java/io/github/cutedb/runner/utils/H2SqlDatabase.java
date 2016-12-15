@@ -47,7 +47,7 @@ import java.sql.SQLException;
 public class H2SqlDatabase {
 	private static final String CHANGE_LOG_INIT = "src/test/resources/db.changelog-initdata.xml";
 
-	public static final String CONNECTION_STRING = "jdbc:h2:mem:runnerTest;SCHEMA=PUBLIC;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0";
+	public static final String CONNECTION_STRING = "jdbc:h2:~/runnerTest:runnerTest;DATABASE_TO_UPPER=false;SCHEMA=PUBLIC;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;TRACE_LEVEL_FILE=0;TRACE_LEVEL_SYSTEM_OUT=0";
 	public static final String DBA_USER_NAME = "sa";
 	public static final String DBA_PASSWORD = "";
 	public static final Logger LOG = LoggerFactory.getLogger(H2SqlDatabase.class);

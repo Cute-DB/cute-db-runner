@@ -10,6 +10,7 @@ import schemacrawler.tools.lint.executable.LintOptionsBuilder;
 import schemacrawler.tools.options.OutputOptions;
 import schemacrawler.tools.options.TextOutputFormat;
 
+import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,19 +35,31 @@ public class BaseCuteDbRunnerTest {
         execute("runnerTest", "sa", "");
     }
 
+
     private void execute(String databaseName, String user, String pwd)  throws Exception{
         final SchemaCrawlerOptions options = new SchemaCrawlerOptions();
         options.setSchemaInfoLevel(SchemaInfoLevelBuilder.standard());
 
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/"+databaseName, user, pwd);
+        Connection connection = DriverManager.getConnection(H2SqlDatabase.CONNECTION_STRING, H2SqlDatabase.DBA_USER_NAME, H2SqlDatabase.DBA_PASSWORD);
 
         final Executable executable = new SchemaCrawlerExecutable(DbRunnerExecutable.COMMAND);
 
-        final Path linterConfigsFile = FileSystems.getDefault().getPath("", BaseCuteDbRunnerTest.class.getResource("schemacrawler-linter-configs-test.xml").getPath());
+        //final Path linterConfigsFile = FileSystems.getDefault().getPath("", BaseCuteDbRunnerTest.class.getResource("schemacrawler-linter-configs-test.xml").getPath());
         final LintOptionsBuilder optionsBuilder = new LintOptionsBuilder();
-        optionsBuilder.withLinterConfigs(linterConfigsFile.toString());
+        //optionsBuilder.withLinterConfigs(linterConfigsFile.toString());
         executable.setAdditionalConfiguration(optionsBuilder.toConfig());
-        executable.getAdditionalConfiguration().put(DbRunnerExecutable.CUTEDB_SERVER_PARAMETER, "http://localhost:9000/");
+        executable.getAdditionalConfiguration().put("server", "h2");
+        executable.getAdditionalConfiguration().put("host", "localhost");
+        executable.getAdditionalConfiguration().put("database", "runnerTest");
+        executable.getAdditionalConfiguration().put("user", "sa");
+        executable.getAdditionalConfiguration().put("password", "sa");
+        executable.getAdditionalConfiguration().put("schema", "public");
+        executable.getAdditionalConfiguration().put("cutedbserver","localhost");
+        executable.getAdditionalConfiguration().put("outputfile","test_lints.html");
+        executable.getAdditionalConfiguration().put("outputformat","html");
+
+        Path here = Paths.get("").toAbsolutePath();
+        executable.getAdditionalConfiguration().put("linterconfigs", "src/test/resources/schemacrawler-linter-configs-test.xml");
 
         Path out = Paths.get("target/test_"+this.getClass().getSimpleName()+".json");
         OutputOptions outputOptions = new OutputOptions(TextOutputFormat.json, out);

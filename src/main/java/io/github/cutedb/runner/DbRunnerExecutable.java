@@ -10,10 +10,7 @@ import schemacrawler.schema.Catalog;
 import schemacrawler.schemacrawler.Config;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.tools.executable.BaseStagedExecutable;
-import schemacrawler.tools.lint.Lint;
-import schemacrawler.tools.lint.LintedCatalog;
-import schemacrawler.tools.lint.LinterConfigs;
-import schemacrawler.tools.lint.Linters;
+import schemacrawler.tools.lint.*;
 import schemacrawler.tools.lint.executable.LintOptions;
 import schemacrawler.tools.lint.executable.LintOptionsBuilder;
 
@@ -96,7 +93,7 @@ public class DbRunnerExecutable extends BaseStagedExecutable
     {
         final LintOptions lintOptions = new LintOptionsBuilder().fromConfig(additionalConfiguration).toOptions();
 
-        final LinterConfigs linterConfigs = readLinterConfigs(lintOptions, getAdditionalConfiguration());
+        final LinterConfigs linterConfigs = LintUtility.readLinterConfigs(lintOptions, getAdditionalConfiguration());
         final Linters linters = new Linters(linterConfigs);
 
         return new LintedCatalog(catalog, connection, linters);
@@ -167,43 +164,43 @@ public class DbRunnerExecutable extends BaseStagedExecutable
     }
 
 
-    /**
-     * Obtain linter configuration from a system property
-     *
-     * @return LinterConfigs
-     * @throws SchemaCrawlerException
-     */
-    private static LinterConfigs readLinterConfigs(final LintOptions lintOptions, final Config config)
-    {
-        final LinterConfigs linterConfigs = new LinterConfigs(config);
-        String linterConfigsFile = null;
-        try
-        {
-            linterConfigsFile = lintOptions.getLinterConfigs();
-            if (!isBlank(linterConfigsFile))
-            {
-                final Path linterConfigsFilePath = Paths.get(linterConfigsFile).toAbsolutePath();
-                if (isRegularFile(linterConfigsFilePath) && isReadable(linterConfigsFilePath))
-                {
-                    linterConfigs.parse(newBufferedReader(linterConfigsFilePath));
-                }
-                else
-                {
-                    LOGGER.log(Level.WARNING, "Could not find linter configs file, " + linterConfigsFile);
-                }
-            }
-            else
-            {
-                LOGGER.log(Level.CONFIG, "Using default linter configs");
-            }
-
-            return linterConfigs;
-        }
-        catch (final Exception e)
-        {
-            LOGGER.log(Level.WARNING, "Could not load linter configs from file, " + linterConfigsFile, e);
-            return linterConfigs;
-        }
-    }
+//    /**
+//     * Obtain linter configuration from a system property
+//     *
+//     * @return LinterConfigs
+//     * @throws SchemaCrawlerException
+//     */
+//    private static LinterConfigs readLinterConfigs(final LintOptions lintOptions, final Config config)
+//    {
+//        final LinterConfigs linterConfigs = new LinterConfigs(config);
+//        String linterConfigsFile = null;
+//        try
+//        {
+//            linterConfigsFile = lintOptions.getLinterConfigs();
+//            if (!isBlank(linterConfigsFile))
+//            {
+//                final Path linterConfigsFilePath = Paths.get(linterConfigsFile).toAbsolutePath();
+//                if (isRegularFile(linterConfigsFilePath) && isReadable(linterConfigsFilePath))
+//                {
+//                    linterConfigs.parse(newBufferedReader(linterConfigsFilePath));
+//                }
+//                else
+//                {
+//                    LOGGER.log(Level.WARNING, "Could not find linter configs file, " + linterConfigsFile);
+//                }
+//            }
+//            else
+//            {
+//                LOGGER.log(Level.CONFIG, "Using default linter configs");
+//            }
+//
+//            return linterConfigs;
+//        }
+//        catch (final Exception e)
+//        {
+//            LOGGER.log(Level.WARNING, "Could not load linter configs from file, " + linterConfigsFile, e);
+//            return linterConfigs;
+//        }
+//    }
 
 }

@@ -9,7 +9,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <schemacrawler.version>14.10.03</schemacrawler.version>
+        <schemacrawler.version>14.10.06</schemacrawler.version>
         <schemacrawler-additional-lints.version>1.1.10</schemacrawler-additional-lints.version>
         <maven-shade-plugin.version>2.4.3</maven-shade-plugin.version>
         <junit.version>4.12</junit.version>
@@ -27,9 +27,23 @@
         <liquibase-maven-plugin.version>3.5.2</liquibase-maven-plugin.version>
         <h2.version>1.4.192</h2.version>
         <checksum-maven-plugin.version>1.3</checksum-maven-plugin.version>
+        <schemacrawler-additional-lints.version>1.1.10</schemacrawler-additional-lints.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
+        <!-- Additional lints dependency -->
+        <dependency>
+            <groupId>com.github.mbarre</groupId>
+            <artifactId>schemacrawler-additional-lints</artifactId>
+            <version>${schemacrawler-additional-lints.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

@@ -1,54 +1,58 @@
 <schemacrawler-linter-configs>
     <linter id="schemacrawler.tools.linter.LinterCatalogSql">
         <run>false</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
         <config>
             <property name="message">message for SQL catalog lint</property>
             <property name="sql"><![CDATA[SELECT TOP 1 1 FROM INFORMATION_SCHEMA.TABLES]]></property>
         </config>
     </linter>
+    <linter id="schemacrawler.tools.linter.LinterTableWithNoSurrogatePrimaryKey">
+        <run>true</run>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+    </linter>
     <linter id="schemacrawler.tools.linter.LinterColumnTypes">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterForeignKeyMismatch">
         <run>false</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterForeignKeyWithNoIndexes">
         <run>true</run>
         <severity>medium</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterNullColumnsInIndex">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterNullIntendedColumns">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterRedundantIndexes">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableAllNullableColumns">
         <run>true</run>
         <severity>high</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableCycles">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableEmpty">
         <run>true</run>
         <severity>high</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableSql">
         <run>false</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
         <config>
             <property name="message">message for custom SQL lint</property>
             <property name="sql"><![CDATA[SELECT TOP 1 1 FROM ${table}]]></property>
@@ -56,99 +60,99 @@
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableWithBadlyNamedColumns">
         <run>false</run><!-- a activer lorsqu'on aura une liste de noms -->
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableWithIncrementingColumns">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableWithNoIndexes">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableWithNoPrimaryKey">
         <run>true</run>
         <severity>critical</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
         <threshold>1</threshold>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableWithPrimaryKeyNotFirst">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableWithNoRemarks">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableWithQuotedNames">
         <run>true</run>
         <severity>medium</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
         <column-exclusion-pattern><![CDATA[(((\w*.){2})|(\w*."\w*".))(("version"))]]></column-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTableWithSingleColumn">
     </linter>
     <linter id="schemacrawler.tools.linter.LinterTooManyLobs">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="schemacrawler.tools.linter.LinterUselessSurrogateKey">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterTableNameNotInLowerCase">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterTableWithNoPrimaryKey">
         <run>true</run>
         <severity>high</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterTableWithNoRemark">
         <run>false</run><!--Doublon avec schemacrawler.tools.linter.LinterTableWithNoRemarks -->
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterColumnContentNotNormalized">
         <run>true</run>
         <severity>high</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
         <config>
             <property name="nbRepeatTolerance">2</property>
             <property name="minTextColumnSize">2</property>
         </config>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterJsonTypeColumn">
-        <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <run>false</run>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterJsonContent">
-        <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <run>false</run>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterXmlContent">
-        <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <run>false</run>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterBooleanContent">
-        <run>true</run>
+        <run>false</run>
         <severity>high</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterPrimaryKeyNotIntegerLikeType">
         <run>true</run>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterBlobTypeColumn">
         <run>true</run>
         <severity>critical</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
         <threshold>1</threshold>
     </linter>
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterColumnSize">
         <run>true</run>
         <severity>high</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
         <config>
             <property name="minColumnSizePercent">20</property>
         </config>
@@ -156,7 +160,13 @@
     <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterForeignKeyMismatchLazy">
         <run>true</run>
         <severity>critical</severity>
-        <table-exclusion-pattern><![CDATA[\w*\.((databasechangeloglock)|(databasechangelog)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
+        <threshold>1</threshold>
+    </linter>
+    <linter id="io.github.mbarre.schemacrawler.tool.linter.LinterForeignKeyName">
+        <run>false</run>
+        <severity>medium</severity>
+        <table-exclusion-pattern><![CDATA[\w*\.[A-Z]*\.((DATABASECHANGELOGLOCK)|(DATABASECHANGELOG)|(\w*_aud)|(revinfo))]]></table-exclusion-pattern>
         <threshold>1</threshold>
     </linter>
 </schemacrawler-linter-configs>
