@@ -3,6 +3,7 @@ package io.github.cutedb.runner.ws;
 import flexjson.JSONSerializer;
 import io.github.cutedb.runner.dto.Lint;
 import io.github.cutedb.runner.dto.Run;
+import io.github.cutedb.runner.logger.CuteDbLog;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,8 @@ public class CuteDbWsConsumer extends BaseWsConsumer implements ICuteDbWsConsume
     private final String URL_POST_NEW_RUN = "runs/uuid/";
     private final String URL_UPDATE_RUN = "runs/uuid/";
     private final String URL_POST_NEW_LINT = "lints/uuid/";
-    private final String URL_POST_END_RUN_SUCCESS= "runs/endSuccess/";
-    private final String URL_POST_END_RUN_ERROR= "runs/endError/";
+    private final String URL_POST_LOG = "/logs/run/id/";
+
 
 
     @Autowired(required = true)
@@ -96,6 +97,16 @@ public class CuteDbWsConsumer extends BaseWsConsumer implements ICuteDbWsConsume
 
         Response res = createAndFirePutRequest(params, url, json);
         return readResponse(Run.class, res, url);
+    }
+
+    public void sendLog(CuteDbLog log){
+        String url = cuteDbWsBaseUrl + URL_POST_LOG + log.getRunId();
+
+        String json = new JSONSerializer().deepSerialize(log);
+        Map<String, String> params = new HashMap<>();
+
+        Response res = createAndFirePutRequest(params, url, json);
+        readResponse(res, url);
     }
 
 }
