@@ -54,7 +54,7 @@ public class BaseCuteDbRunnerTest {
         executable.getAdditionalConfiguration().put("user", "sa");
         executable.getAdditionalConfiguration().put("password", "sa");
         executable.getAdditionalConfiguration().put("schema", "public");
-        executable.getAdditionalConfiguration().put("cutedbserver","localhost");
+        executable.getAdditionalConfiguration().put("cutedbserver","svi-tomcat0");
         executable.getAdditionalConfiguration().put("outputfile","test_lints.html");
         executable.getAdditionalConfiguration().put("outputformat","html");
 
