@@ -2,6 +2,8 @@
 
 <configuration>
 
+    <property scope="context" name="cuteDbServer.ctx" value="${cuteDbServer}"/>
+
     <property name="APP_NAME" value="cute-db-runner" />
 	
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -10,24 +12,16 @@
         </layout>
     </appender>
 
-    <appender name="SERVER" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="REMOTE" class="io.github.cutedb.runner.logger.CuteDbServerAppender">
+        <server>${cuteDbServer}</server>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>[${APP_NAME}] %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
         </layout>
     </appender>
 
-    <logger name="io.github.cutedb.runner" level="debug" />
-
-    <logger name="io.github.mbarre.schemacrawler" level="info" additivity="false">
+    <root >
         <appender-ref ref="STDOUT" />
-    </logger>
-
-    <logger name="schemacrawler" level="debug" additivity="false">
-        <appender-ref ref="STDOUT" />
-    </logger>
-
-    <root level="info">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="REMOTE" />
     </root>
 
 </configuration>

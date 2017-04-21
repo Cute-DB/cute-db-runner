@@ -2,46 +2,45 @@ package io.github.cutedb.runner.logger;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
-import ch.qos.logback.core.Layout;
-import ch.qos.logback.core.LayoutBase;
+import io.github.cutedb.runner.ws.CuteDbWsConsumer;
 
 /**
  * Created by barmi83 on 2/3/17.
  */
 public class CuteDbServerAppender extends AppenderBase<ILoggingEvent>
 {
+
     String server;
-
-    private static Layout<ILoggingEvent> defaultLayout = new LayoutBase<ILoggingEvent>() {
-        public String doLayout(ILoggingEvent event) {
-            return "-- [" + event.getLevel() + "]" +
-                    event.getLoggerName() + " - " +
-                    event.getFormattedMessage().replaceAll("\n", "\n\t");
-        }
-    };
-
-    @Override
-    public void start() {
-        if (this.server == null) {
-            addError("No server set for the appender named ["+ name +"].");
-            return;
-        }
-
-        super.start();
-    }
-
+    CuteDbWsConsumer cuteDbWsConsumer;
 
     public String getServer() {
         return server;
     }
-
     public void setServer(String server) {
         this.server = server;
     }
 
     @Override
-    protected void append(ILoggingEvent iLoggingEvent) {
+    public synchronized void start() {
 
+        if(!isStarted()) {
+//            if (Objects.equals(this.server, "cuteDbServer_IS_UNDEFINED")) {
+//                addError("No server set for the appender named [" + name + "].");
+//                return;
+//            }
+
+            if (cuteDbWsConsumer == null) {
+                cuteDbWsConsumer = new CuteDbWsConsumer(server);
+            }
+
+            super.start();
+
+        }
+    }
+
+    @Override
+    protected void append(ILoggingEvent iLoggingEvent) {
+            sendMessageToServer(iLoggingEvent);
     }
 
     private void sendMessageToServer(final ILoggingEvent evt){
@@ -49,7 +48,6 @@ public class CuteDbServerAppender extends AppenderBase<ILoggingEvent>
         log.setTimestamp(evt.getTimeStamp());
         log.setLevel(evt.getLevel().levelStr);
         log.setMessage(evt.getFormattedMessage());
-
-
+        cuteDbWsConsumer.sendLog(log);
     }
 }

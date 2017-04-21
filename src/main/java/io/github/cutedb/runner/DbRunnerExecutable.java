@@ -1,13 +1,19 @@
 package io.github.cutedb.runner;
 
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
 import io.github.cutedb.runner.dto.BuildStatus;
 import io.github.cutedb.runner.dto.LintSeverity;
 import io.github.cutedb.runner.dto.Run;
 import io.github.cutedb.runner.exceptions.CuteDbRunnerException;
+import io.github.cutedb.runner.logger.CuteDbLog;
+import io.github.cutedb.runner.logger.CuteDbServerAppender;
+import io.github.cutedb.runner.logger.LoggerUtils;
 import io.github.cutedb.runner.ws.CuteDbWsConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import schemacrawler.schema.Catalog;
-import schemacrawler.schemacrawler.Config;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.tools.executable.BaseStagedExecutable;
 import schemacrawler.tools.lint.*;
@@ -16,23 +22,16 @@ import schemacrawler.tools.lint.executable.LintOptionsBuilder;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import static java.nio.file.Files.*;
-import static sf.util.Utility.isBlank;
 
 public class DbRunnerExecutable extends BaseStagedExecutable
 {
 
-    private static final Logger LOGGER = Logger.getLogger(DbRunnerExecutable.class.getName());
+    private Logger LOGGER;
 
     public static final String COMMAND = "cutedb";
     public static final String CUTEDB_SERVER_PARAMETER = "cutedbserver";
@@ -56,7 +55,18 @@ public class DbRunnerExecutable extends BaseStagedExecutable
     public void executeOn(final Catalog catalog, final Connection connection) throws CuteDbRunnerException {
 
         if(additionalConfiguration != null &&  additionalConfiguration.containsKey(CUTEDB_SERVER_PARAMETER)){
-            cuteDbWsConsumer = new CuteDbWsConsumer(additionalConfiguration.get(CUTEDB_SERVER_PARAMETER), additionalConfiguration.getStringValue(CUTEDB_SERVER_PORT_PARAMETER, CUTEDB_SERVER_PORT));
+
+            String server = additionalConfiguration.get(CUTEDB_SERVER_PARAMETER);
+            String port = additionalConfiguration.getStringValue(CUTEDB_SERVER_PORT_PARAMETER, CUTEDB_SERVER_PORT);
+
+            LOGGER = LoggerUtils.createLoggerFor(DbRunnerExecutable.class.getName(), "http://"+server+":"+port);
+
+//            ((CuteDbServerAppender)LOGGER).setServer("http://"+server+":"+port);
+//            System.setProperty("server", "http://"+server+":"+port);
+
+            cuteDbWsConsumer = new CuteDbWsConsumer(server, port);
+            LOGGER.error("************hello***************");
+
         }
         else
             throw new CuteDbRunnerException("cutedbserver url is missing.");
@@ -67,7 +77,7 @@ public class DbRunnerExecutable extends BaseStagedExecutable
             final LintedCatalog lintedCatalog = createLintedCatalog(catalog, connection);
             processLints(lintedCatalog);
         }catch (SchemaCrawlerException e){
-            LOGGER.log(Level.SEVERE, "The run failed : "+e.getMessage(), e);
+            LOGGER.error("The run failed : "+e.getMessage(), e);
             if(currentRun != null){
                 currentRun.setStatus(BuildStatus.FAILURE);
                 currentRun.setEnded(new Date());
@@ -113,7 +123,7 @@ public class DbRunnerExecutable extends BaseStagedExecutable
      */
     private void processLints(final LintedCatalog lintedCatalog)
     {
-        LOGGER.log(Level.INFO, "Start sending data");
+        LOGGER.info("Start sending data");
         Stream<Lint<?>> scLints = StreamSupport.stream(lintedCatalog.getCollector().spliterator(),  false);
 
         // Count critical hits
@@ -156,7 +166,7 @@ public class DbRunnerExecutable extends BaseStagedExecutable
         try {
             newRun.setHost(InetAddress.getLocalHost().getHostName());
         } catch (UnknownHostException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             throw new CuteDbRunnerException("Unable to get host name", e.getCause());
         }
         Run remoteRun = cuteDbWsConsumer.createNewRun(newRun);

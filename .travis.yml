@@ -6,17 +6,22 @@ cache:
   - "$HOME/.m2"
 install: true
 script:
-- mvn clean install checksum:files -DskipTests=true -Dmaven.javadoc.skip=true
+- mvn clean install checksum:files -DskipTests=true -Dmaven.javadoc.skip=true versioneye:update
 deploy:
   provider: releases
   api_key:
     secure: nu9KJ4KxYqm1pB9+ESsfyjQjlAeDool/1IwimSjpQ/6018+s+y0zFTLqTFX8Lq2d+gDlbdhnAV8Mv9LZlcwNRTmyJo3ZxFt+Mr23dn5LCx0PyTH00md/9gFoRNSpGvBIqwNJw5AUM5eqKDbAodDpXNemfXn7kd5zbXSVo0vtVcOESk0HO7tRfjMvfxbKEOMXil67iKTdSlQQ/++F/5f5rWOK8OaBZYrIvdos+7s4RPs35lUypQDiX8nUn08SnFB5Lqudr00cqKu+i4FPwqSgeqr3lCjCysGR1irmu1qz0AUG6ssp0xqrsO3nCpZIxT0+bZCzZWh3XTdrUy4TnVO5A3K+PKDiconkWQyIxLxZoOmtaa90GfBZHpJQfHfy/auL/wAjQ+YHtPRVchUPlzOgWljrHmWm046g0MRoc/bhBiDWQr1yZxLdBI/ss4o8RPhWTx54uvZhWwAas76pbaTHrvjnyERUvjv7i3x7dt+LJf/DvgroFaPrg/XzsMfqraZ7QU0ZGTs6VJdDKY027WzZQ+oSp7htDTTq8pknz+O59pIYIXPhr3ildRtmYGm2/q8gvjpKymIuWAUza/zVASl317sOJK8t63PBafzQAHu1ex2RmlFhneb+MHGosjylEwPDQZog8y0PtEMcdCRhGosjuEfEUToJxuP2Tq6elr3s+tc=
   file:
-    - export RELEASE_PKG_FILE=$(ls target/*.jar)
-    - export RELEASE_PKG_MD5_FILE=$(ls target/*.jar.md5)
-    - export RELEASE_PKG_SHA_FILE=$(ls target/*.jar.sha1)
-    - echo "deploying $RELEASE_PKG_FILE , $RELEASE_PKG_MD5_FILE , $RELEASE_PKG_SHA_FILE to GitHub releases"
+  - export RELEASE_PKG_FILE=$(ls target/*.jar)
+  - export RELEASE_PKG_MD5_FILE=$(ls target/*.jar.md5)
+  - export RELEASE_PKG_SHA_FILE=$(ls target/*.jar.sha1)
+  - echo "deploying $RELEASE_PKG_FILE , $RELEASE_PKG_MD5_FILE , $RELEASE_PKG_SHA_FILE
+    to GitHub releases"
   skip_cleanup: true
   on:
     tags: true
     repo: Cute-DB/cute-db-runner
+env:
+  global:
+  - secure: t30gWk+Tahh4b9PUEtszNx3A8dx0tvjU8G/Ty+n0mVv7qO6HZK383XDLevs6YgKD/wR+caD81aFMIbKy1xCv/BTi0NBF32NxMY7Wyq8P3PDz9leafGRTGfiIQPYz+7lV/jEhgN8rF/K+P8ZhRP5oIoV0766rSNOietxSompMjDlBreWeY8pZejdn0bs8Fdcnf54exT0FQxaB6Mhj7n09fOdpMqUaqlvnYTuVGqce0lyiBpKietaXjvkrd4ExdTrBci8GQIrxBpcHRMVLdjCdAH15r/ZcsE8JvbwAR3ka6XFyg5sjhiPLYUQwxnV7P7daGcUJkGI5OdnVAEt935EIKdq0Uvz76C9WkwoBWA2iY/kpK0AEDJLs6eW83DQ72BHxv3htgKlNZBwd/Elk92vR084/k6Uytb7KnQyTkxn/mR+Vs7jGewNh6QuKn5ZZ+hLY9KV85lCt/psA2Ma7ElwgMZx/RxkXHXj53+0SsquExRkr8nuYclGSz97Mncme+Z9IFjERyyGBELbdeWb5cPxQq5QXNsQJ1nO1hqNZBEV2HWEtFiUG039I3ccmRGHyXjYJuwAmOZHkyy9vLwCt9giLIZ0pHCdNxHz93Hr8yUHEqyNNKmD8Euaj7Oq9S1mNVzsb+f+W2JSC/khbmPnv6gfks7RLIsUyQgAzWUfwDxybCVw=
+  - secure: gX/H+4QgXjI9C2textRKnRq7hjg3/hpyMnSTn3Dn6gmJ3pOvwTwBwjqS2SQC10LXI8Inw/6gNH5ufDdRBzOXN1JmnPp805t/m36v7SGBlvwM1A3ZdkSlHAiGnn27ekomAH0wHU3GjgJqdSaIM5oD1Rc35OzMyUvpwdPgxfKP63jOd2hN/HpDS6GqPVta0CpkB6zUf8D+WYxL1j9zJ0yslhcYwJaLJpfwGagpq5s7JNXmxwQdk2eEak57McNSPMAq3R6//mxEVsUXw9uUEfPXxvMUi70pYoAkYaW558nE95tocxHit/c3Ou9cQ5Y+qJENTv5sfHwYYwm4z1t8QuMs5jEaKBBfVcw4de7wvxK9W6QKRKEnInvyubHnZ8jjsUx0Hxh/LKmDZBSF0Nf1xb2ymkJbh8eiEkixjdbq8LOewnaB7hQ9JaZaxctxktVpo1ZK87RP8rsRp9iOrCzf9hJcWt2XQyx7dhGeatwv73iXRPeTpp1ov6c3RELyCXfoEc+U9IEF/4vGSVoSxO67XV79BJMwb4yGNwg2lSOZoyEmV5/7mzKD1nKOvahbwq/a3v3KLGbn7vHQSt1EjPaCL6yIM46tIpQSgwyp/CaaXYEB4L1AC7wPK0J2ISsVcfyZ5E4PmsN38BulJoNrlDFDskgrDzl3y33vB3u9YBvT82kuvfk=

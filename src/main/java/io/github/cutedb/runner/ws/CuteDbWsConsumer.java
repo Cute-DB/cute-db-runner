@@ -26,7 +26,7 @@ public class CuteDbWsConsumer extends BaseWsConsumer implements ICuteDbWsConsume
     private final String URL_POST_NEW_RUN = "runs/uuid/";
     private final String URL_UPDATE_RUN = "runs/uuid/";
     private final String URL_POST_NEW_LINT = "lints/uuid/";
-    private final String URL_POST_LOG = "/logs/run/id/";
+    private final String URL_POST_LOG = "logs/";
 
 
 
@@ -36,6 +36,10 @@ public class CuteDbWsConsumer extends BaseWsConsumer implements ICuteDbWsConsume
 
     public CuteDbWsConsumer (String server, String port){
         cuteDbWsBaseUrl = "http://"+server+":"+port+"/";
+    }
+
+    public CuteDbWsConsumer (String url){
+        cuteDbWsBaseUrl = url;
     }
 
     private boolean valideCuteDbWsBaseUrl() {
@@ -100,12 +104,11 @@ public class CuteDbWsConsumer extends BaseWsConsumer implements ICuteDbWsConsume
     }
 
     public void sendLog(CuteDbLog log){
-        String url = cuteDbWsBaseUrl + URL_POST_LOG + log.getRunId();
-
+        String url = cuteDbWsBaseUrl + "/" + URL_POST_LOG;
         String json = new JSONSerializer().deepSerialize(log);
         Map<String, String> params = new HashMap<>();
 
-        Response res = createAndFirePutRequest(params, url, json);
+        Response res = createAndFirePostRequest(params, url, json);
         readResponse(res, url);
     }
 
