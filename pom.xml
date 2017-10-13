@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.cutedb</groupId>
     <artifactId>cutedbrunner</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1-SNAPSHOT</version>
     <name>Cute DB Runner - Additional SchemaCrawler Command</name>
     <packaging>jar</packaging>
 
