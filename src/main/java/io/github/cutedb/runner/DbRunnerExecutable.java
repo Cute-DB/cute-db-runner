@@ -1,18 +1,13 @@
 package io.github.cutedb.runner;
 
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
 import io.github.cutedb.runner.dto.BuildStatus;
 import io.github.cutedb.runner.dto.LintSeverity;
 import io.github.cutedb.runner.dto.Run;
 import io.github.cutedb.runner.exceptions.CuteDbRunnerException;
-import io.github.cutedb.runner.logger.CuteDbLog;
-import io.github.cutedb.runner.logger.CuteDbServerAppender;
 import io.github.cutedb.runner.logger.LoggerUtils;
 import io.github.cutedb.runner.ws.CuteDbWsConsumer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import schemacrawler.schema.Catalog;
 import schemacrawler.schemacrawler.SchemaCrawlerException;
 import schemacrawler.tools.executable.BaseStagedExecutable;
@@ -65,7 +60,6 @@ public class DbRunnerExecutable extends BaseStagedExecutable
 //            System.setProperty("server", "http://"+server+":"+port);
 
             cuteDbWsConsumer = new CuteDbWsConsumer(server, port);
-            LOGGER.error("************hello***************");
 
         }
         else

@@ -31,6 +31,11 @@ public class DbRunnerCommandProvider implements CommandProvider
   }
 
   @Override
+  public String getHelpAdditionalText() {
+    return "";
+  }
+
+  @Override
   public String getHelpResource()
   {
     return "/help/DbRunnerCommandProvider.txt";

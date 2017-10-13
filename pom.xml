@@ -3,33 +3,34 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.cutedb</groupId>
     <artifactId>cutedbrunner</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
     <name>Cute DB Runner - Additional SchemaCrawler Command</name>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <schemacrawler.version>14.15.04</schemacrawler.version>
-        <schemacrawler-additional-lints.version>1.02.03</schemacrawler-additional-lints.version>
-        <maven-shade-plugin.version>3.0.0</maven-shade-plugin.version>
+        <schemacrawler.version>14.16.04</schemacrawler.version>
+        <schemacrawler-additional-lints.version>1.03.01</schemacrawler-additional-lints.version>
+        <maven-shade-plugin.version>3.1.0</maven-shade-plugin.version>
         <junit.version>4.12</junit.version>
         <javassist.version>3.21.0-GA</javassist.version>
-        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <jersey-client.version>2.25.1</jersey-client.version>
         <flexjson.version>3.3</flexjson.version>
         <spring.version>4.3.7.RELEASE</spring.version>
         <joda-time.version>2.9.9</joda-time.version>
-        <commons-lang3.version>3.5</commons-lang3.version>
+        <commons-lang3.version>3.6</commons-lang3.version>
         <jcl-over-slf4j.version>1.7.25</jcl-over-slf4j.version>
         <logback-classic.version>1.2.3</logback-classic.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
-        <postgresql.version>42.0.0</postgresql.version>
+        <postgresql.version>42.1.4</postgresql.version>
         <liquibase-maven-plugin.version>3.5.3</liquibase-maven-plugin.version>
-        <h2.version>1.4.194</h2.version>
+        <h2.version>1.4.196</h2.version>
         <checksum-maven-plugin.version>1.4</checksum-maven-plugin.version>
+        <hsqldb.version>2.4.0</hsqldb.version>
 
         <!-- Maven plugins -->
-        <versioneye-maven-plugin.version>3.11.2</versioneye-maven-plugin.version>
+        <versioneye-maven-plugin.version>3.11.4</versioneye-maven-plugin.version>
         <versioneye-maven-plugin.apiKey>${env.VERSIONEYE_APIKEY}</versioneye-maven-plugin.apiKey>
         <versioneye-maven-plugin.projectId>${env.VERSIONEYE_PROJECTID}</versioneye-maven-plugin.projectId>
     </properties>
@@ -57,7 +58,7 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.3.4</version>
+            <version>${hsqldb.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
